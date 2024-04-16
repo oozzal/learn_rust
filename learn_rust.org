@@ -1,0 +1,135 @@
+* How to read rust std documentation
+** modules -> examples
+** primitive types
+** rust prelude -> publicly available functions
+** macros
+** keywords
+
+* Rust for the impatient
+** type annotation => let a: i32 = 42
+** tuples => let pair = ('a', 17); pair.0; pair.1;
+** iterator => let x = vec![1, 2, 3, 4].iter().map(|x| x+3).fold(0, |x,y| x + y);
+** function => fn with_return() -> i32 { 0 }
+** struct => struct Number { odd: bool, value: i32 }
+** match => match n.value { 1 => .., 2 => ..}
+** impl => impl Number { fn is_positive (self) -> bool { self.value > 0 } }
+** immutability => let mut n = Number { odd: true, value: 7 }; n.value = 19;
+** generics => fn foobar<T>(arg: T) { }
+** vector => let v1 = vec![1, 2, 3];
+** macro => println!, panic!, vec!
+** Option => Some(v), None
+** Result => Ok(v), Err(e)
+** ? => let s = str::from_utf8(m)?;
+** iterator => let natural_numbers = 1..;
+** Algebraic Type System =>
+** rust superpowers
+*** macros -> is turing complete
+*** unsafe systems -> unsafe { }
+** x
+
+* Features (letsgetrusty)
+** generics, iterators, templates, collections, classes
+** ownership/borrowing model
+** Error handling
+** module system
+** polymorphism
+** async
+** macros
+** cargo
+
+* Initialize array of size x
+let a = [10; 102]; // array of length 102 with all elements 10
+
+* Array Slice
+let a = [1,2,3,4,5];
+let slice = &a[1,4]; // [2,3,4]
+
+* Pattern matching tuples
+let person = ("Uzzal", 32);
+let (name, age) = person;
+
+* Access tuple item by index
+let numbers = (1, 2, 3);
+let first = numbers.0;
+let second = numbers.1;
+
+* Initialize Vector
+let a = [10, 20, 30];
+let v = vec![10, 20, 30];
+
+* Rust Structs
+struct Package {
+    sender_country: String,
+    recipient_country: String,
+    weight_in_grams: u32,
+}
+
+impl Package {
+    fn new(sender_country: String, recipient_country: String, weight_in_grams: u32) -> Package {
+        if weight_in_grams < 10 {
+            // This is not how you should handle errors in Rust,
+            // but we will learn about error handling later.
+            panic!("Can not ship a package with weight below 10 grams.")
+        } else {
+            Package {
+                sender_country,
+                recipient_country,
+                weight_in_grams,
+            }
+        }
+    }
+
+    fn is_international(&self) -> bool {
+        self.sender_country != self.recipient_country
+    }
+
+    fn get_fees(&self, cents_per_gram: u32) -> u32 {
+        cents_per_gram * 1500
+    }
+}
+
+* Modules
+mod sausage_factory {
+    // Don't let anybody outside of this module see this!
+    fn get_secret_recipe() -> String {
+        String::from("Ginger")
+    }
+
+    pub fn make_sausage() {
+        get_secret_recipe();
+        println!("sausage!");
+    }
+}
+
+fn main() {
+    sausage_factory::make_sausage();
+}
+
+* derive directive
+#[derive(Debug, Clone, Copy)]
+enum Position {
+    Manager,
+    Supervisor,
+    Worker,
+}
+
+#[derive(Debug, Clone, Copy)]
+struct Employee {
+    position: Position,
+    work_hours: i64,
+}
+
+fn print_employee(emp: Employee) {
+    println!("{:?}", emp);
+}
+
+fn main() {
+    let me = Employee {
+        position: Position::Worker,
+        work_hours: 40
+    };
+    print_employee(me);
+    print_employee(me);
+}
+
+*
